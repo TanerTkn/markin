@@ -29,6 +29,6 @@ class Campaign {
         markCount: length,
         title: snapshot.data()['title'],
         category: category,
-        dateTime: snapshot.data()['dateTime']);
+        dateTime: snapshot.data()['dateTime'].toDate());
   }
 }

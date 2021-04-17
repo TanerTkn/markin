@@ -1,18 +1,32 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:markin/core/extension/context_extension.dart';
+import 'package:markin/view/category_page.dart';
 
 class Categories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> categories = [
-      {"icon": "assets/svgs/education.svg", "text": "Education"},
-      {"icon": "assets/svgs/medical.svg", "text": "Medical"},
-      {"icon": "assets/svgs/family.svg", "text": "Family"},
-      {"icon": "assets/svgs/environment.svg", "text": "Environment"},
-      {"icon": "assets/svgs/animal.svg", "text": "Animal"},
-      {"icon": "assets/svgs/violence.svg", "text": "Violence"},
-      {"icon": "assets/svgs/other.svg", "text": "Other"},
+      {
+        "icon": "assets/svgs/education.svg",
+        "text": "Education",
+        "key": "education"
+      },
+      {"icon": "assets/svgs/medical.svg", "text": "Medical", "key": "medical"},
+      {"icon": "assets/svgs/family.svg", "text": "Family", "key": "family"},
+      {
+        "icon": "assets/svgs/environment.svg",
+        "text": "Environment",
+        "key": "environment"
+      },
+      {"icon": "assets/svgs/animal.svg", "text": "Animal", "key": "animal"},
+      {
+        "icon": "assets/svgs/violence.svg",
+        "text": "Violence",
+        "key": "violence"
+      },
+      {"icon": "assets/svgs/other.svg", "text": "Other", "key": "other"},
     ];
     return Container(
       height: context.sizeH(0.20),
@@ -23,7 +37,19 @@ class Categories extends StatelessWidget {
             categories.length,
             (index) => Padding(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: CategoryCard(icon: categories[index]["icon"], text: categories[index]["text"], press: () {}),
+              child: CategoryCard(
+                  icon: categories[index]["icon"],
+                  text: categories[index]["text"],
+                  press: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryPage(
+                            categoryID: categories[index]["key"],
+                            categoryName: categories[index]["text"],
+                          ),
+                        ));
+                  }),
             ),
           )),
     );

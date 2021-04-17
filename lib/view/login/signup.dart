@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:markin/core/controllers/user_controller.dart';
+import 'package:markin/core/services/auth_service.dart';
+import 'package:markin/core/services/validator_service.dart';
+import 'package:markin/models/gender.dart';
+import 'package:markin/models/profile.dart';
+import 'package:markin/my_home_page.dart';
+import 'package:markin/widgets/custom_radium.dart';
 import 'package:markin/widgets/texthelper.dart';
+import 'package:markin/core/extension/context_extension.dart';
 
 class SignUp extends StatefulWidget {
   SignUp({Key key}) : super(key: key);
@@ -11,8 +20,19 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   static final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   String valueChoose;
-  List listitem = ["Male", "Famele"];
 
+  TextEditingController emailController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool obscureText = true;
+  Validator validator = Validator();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  String gender = "Male";
+  List<Gender> genders = [
+    Gender("Male", "assets/svgs/man.svg", true),
+    Gender("Woman", "assets/svgs/woman.svg", false),
+    Gender("Other", "assets/svgs/unisex.svg", false)
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,77 +97,91 @@ class _SignUpState extends State<SignUp> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TextHelper.inputFieldWidget(
-                context,
-                Icon(Icons.lock),
-                'e-Mail',
-                'E-Mail',
-                (onValidateVal) {
-                  if (onValidateVal.isEmpty) {
-                    return 'E-Mail is empty';
-                  }
-                  return null;
-                },
-                (onSavedValue) {},
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              TextHelper.inputFieldWidget(
-                context,
-                Icon(Icons.lock),
-                'username',
-                'Username',
-                (onValidateVal) {
-                  if (onValidateVal.isEmpty) {
-                    return 'Username is empty';
-                  }
-                  return null;
-                },
-                (onSavedValue) {},
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              TextHelper.inputFieldWidget(
-                context,
-                Icon(Icons.lock),
-                'password',
-                'PassWord',
-                (onValidateVal) {
-                  if (onValidateVal.isEmpty) {
-                    return 'Password is empty';
-                  }
-                  return null;
-                },
-                (onSavedValue) {},
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              TextHelper.inputFieldWidget(
-                context,
-                Icon(Icons.lock),
-                'sex',
-                'Sex',
-                (onValidateVal) {
-                  if (onValidateVal.isEmpty) {
-                    return 'Sex is empty';
-                  }
-                  return null;
-                },
-                (onSavedValue) {},
-              ),
-              
-              SizedBox(
-                height: 40,
-              ),
-              buildContainer()
-            ],
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextHelper.inputFieldWidget(
+                  context: context,
+                  icon: Icon(Icons.lock),
+                  keyName: 'e-Mail',
+                  controller: emailController,
+                  hintName: 'E-Mail',
+                  onValidate: (onValidateVal) {
+                    return validator.validateEmail(onValidateVal);
+                  },
+                  onSaved: (onSavedValue) {},
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                TextHelper.inputFieldWidget(
+                  context: context,
+                  icon: Icon(Icons.lock),
+                  keyName: 'username',
+                  controller: usernameController,
+                  hintName: 'Username',
+                  onValidate: (onValidateVal) {
+                    return validator.validateName(onValidateVal);
+                  },
+                  onSaved: (onSavedValue) {},
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                TextHelper.passFieldWidget(
+                  context: context,
+                  icon: Icon(Icons.lock),
+                  keyName: 'password',
+                  controller: passwordController,
+                  obscureFunction: () {
+                    setState(() {
+                      obscureText = !obscureText;
+                    });
+                  },
+                  obscureText: obscureText,
+                  obscureIcon: Icon(obscureText == true
+                      ? Icons.visibility
+                      : Icons.visibility_off),
+                  hintName: 'Password',
+                  onValidate: (onValidateVal) {
+                    return validator.validatePasswordLength(onValidateVal);
+                  },
+                  onSaved: (onSavedValue) {},
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  height: context.sizeH(0.15),
+                  width: context.sizeW(0.8),
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: genders.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          splashColor: Colors.pinkAccent,
+                          onTap: () {
+                            setState(() {
+                              genders.forEach(
+                                  (gender) => gender.isSelected = false);
+                              genders[index].isSelected = true;
+                              gender = genders[index].name.toLowerCase();
+                            });
+                          },
+                          child: CustomRadio(genders[index]),
+                        );
+                      }),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                buildContainer()
+              ],
+            ),
           ),
         ),
       ),
@@ -165,21 +199,27 @@ class _SignUpState extends State<SignUp> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Text(
-            'Login',
+            'Sign Up',
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
         ),
-        onPressed: () {},
+        onPressed: () async {
+          if (formKey.currentState.validate() && gender.isNotEmpty) {
+            AuthService authService = AuthService();
+            Profile profile = await authService.signUpAccount(
+                emailController.text,
+                passwordController.text,
+                "https://t3.ftcdn.net/jpg/04/26/07/16/360_F_426071644_FQ6PbbZmOifAreC4Vtw0huGVTnn3GXTM.jpg",
+                usernameController.text);
+            userController.updateProfile(profile);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                ));
+          }
+        },
       ),
     );
-  }
-
-  bool validateAndSave() {
-    final form = globalFormKey.currentState;
-    if (form.validate()) {
-      form.save();
-      return true;
-    }
-    return false;
   }
 }

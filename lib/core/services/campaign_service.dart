@@ -1,19 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:markin/core/services/auth_service.dart';
 import 'package:markin/core/services/database_path.dart';
 import 'package:markin/models/campaign_category.dart';
 import 'package:markin/models/campaign_model.dart';
 
 class CampaignService {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  Future<List<Campaign>> getRecentCampaigns() async {
-    var data = await _firestore.collection(campaignPath).get();
+
+  Future<List<Campaign>> getCampaignsByUserID(String userID) async {
+    var data = await _firestore
+        .collection(campaignPath)
+        .where("ownerID", isEqualTo: firebaseAuth.currentUser.uid)
+        .get();
     List<Campaign> campaignList = [];
-    data.docs.forEach((element) async {
+
+    for (var i = 0; i < data.docs.length; i++) {
+      var element = data.docs[i];
       int count = await getJoinedUserCount(element.id);
       var category = stringToCampaignCategories(element.data()['category']);
       Campaign campaign = Campaign.fromSnapshot(element, count, category);
       campaignList.add(campaign);
-    });
+    }
+
+    return campaignList;
+  }
+
+  Future<List<Campaign>> getRecentCampaigns() async {
+    var data = await _firestore.collection(campaignPath).get();
+    List<Campaign> campaignList = [];
+    for (var i = 0; i < data.docs.length; i++) {
+      var element = data.docs[i];
+      int count = await getJoinedUserCount(element.id);
+      var category = stringToCampaignCategories(element.data()['category']);
+      Campaign campaign = Campaign.fromSnapshot(element, count, category);
+      campaignList.add(campaign);
+    }
     return campaignList;
   }
 
@@ -36,23 +57,30 @@ class CampaignService {
         .orderBy("dateTime")
         .get();
     List<Campaign> campaignList = [];
-    data.docs.forEach((element) async {
+    for (var i = 0; i < data.docs.length; i++) {
+      var element = data.docs[i];
       int count = await getJoinedUserCount(element.id);
       Campaign campaign =
           Campaign.fromSnapshot(element, count, campaignCategory);
       campaignList.add(campaign);
-    });
+    }
     return campaignList;
   }
 
-  Future addCampaign({
-    String content,
-    String title,
-    String imageURL,
-  }) async {
-    await _firestore
-        .collection(campaignPath)
-        .add({"content": content, "title": title, "image": imageURL});
+  Future addCampaign(
+      {String content,
+      String title,
+      String imageURL,
+      CampaignCategory campaignCategory}) async {
+    var _campaignCategory = campaignToString(campaignCategory);
+    await _firestore.collection(campaignPath).add({
+      "content": content,
+      "title": title,
+      "image": imageURL,
+      "category": _campaignCategory,
+      "ownerID": firebaseAuth.currentUser.uid,
+      "dateTime": DateTime.now()
+    });
   }
 
   CampaignCategory stringToCampaignCategories(String category) {

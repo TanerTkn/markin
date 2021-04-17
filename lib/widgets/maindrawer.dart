@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:markin/core/controllers/user_controller.dart';
 import '../constant/color_constant.dart';
 import '../core/extension/context_extension.dart';
 import '../view/home/home_view.dart';
@@ -9,6 +9,7 @@ class MainDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(userController.profile);
     return SizedBox(
       width: context.sizeW(0.8),
       child: Drawer(
@@ -27,12 +28,13 @@ class MainDrawer extends StatelessWidget {
                       height: 70,
                       width: 70,
                       child: CircleAvatar(
-                        backgroundImage: AssetImage(''),
+                        backgroundImage:
+                            NetworkImage(userController.profile.profileImage),
                       ),
                     ),
-                    SizedBox(height: 15),
+                    SizedBox(height: 10),
                     Text(
-                      'Taner Tekin',
+                      userController.profile.name,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -41,7 +43,7 @@ class MainDrawer extends StatelessWidget {
                     ),
                     SizedBox(height: 3),
                     Text(
-                      'tanertekin@gmail.com',
+                      userController.profile.email,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

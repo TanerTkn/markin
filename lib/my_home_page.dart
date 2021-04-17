@@ -14,10 +14,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with BaseState {
-  TextStyle appBarTextStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black);
+  TextStyle appBarTextStyle =
+      TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black);
   int currentIndex = 0;
   final pages = [
-    HomeView(),
     HomeView(),
     HomeView(),
     HomeView(),
@@ -65,15 +65,6 @@ class _MyHomePageState extends State<MyHomePage> with BaseState {
               onTap: () {
                 setState(() {
                   currentIndex = 0;
-                });
-              },
-            ),
-            BottomItem(
-              icon: 'assets/svgs/vote.svg',
-              isSelected: currentIndex == 1,
-              onTap: () {
-                setState(() {
-                  currentIndex = 1;
                 });
               },
             ),
