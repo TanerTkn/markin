@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1005928778513",
+    "project_id": "markin-87ca7",
+    "storage_bucket": "markin-87ca7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1005928778513:android:5b8eb358424b2722b59ab0",
+        "android_client_info": {
+          "package_name": "com.ninjacoders.markin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1005928778513-3i09cp9cfv53d17el1j3tkrg3lpu7o8t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH4yadcoeozMAyu89B_5YD0f2LTCcNUT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1005928778513-3i09cp9cfv53d17el1j3tkrg3lpu7o8t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
