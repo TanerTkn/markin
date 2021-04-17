@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../constant/color_constant.dart';
 
 class BottomItem extends StatelessWidget {
 
-  final IconData icon;
+  final String icon;
   final bool isSelected;
   final Function onTap;
 
@@ -11,12 +12,12 @@ class BottomItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      highlightColor: ColorConstants.instance.primaryColor,
+      highlightColor: ColorConstants.instance.perfume,
       onTap: onTap,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Icon(icon, color: isSelected ? ColorConstants.instance.primaryColor : Colors.grey, size: 22),
+          SvgPicture.asset(icon, color: isSelected ? ColorConstants.instance.purpleHeart : Colors.grey,),
         ]),
       ),
     );
