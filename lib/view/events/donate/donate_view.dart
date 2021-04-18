@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:markin/constant/color_constant.dart';
-import 'package:markin/models/campaign_model.dart';
-import 'package:markin/my_home_page.dart';
 import 'package:markin/utilities/textstyle.dart';
 import 'package:markin/core/extension/context_extension.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -30,7 +28,8 @@ class _DonateViewState extends State<DonateView> {
                     borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage("https://i.milliyet.com.tr/GazeteHaberIciResim/2017/11/21/fft16_mf10284922.Jpeg"),
+                      image: NetworkImage(
+                          "https://i.milliyet.com.tr/GazeteHaberIciResim/2017/11/21/fft16_mf10284922.Jpeg"),
                     )),
               ),
             ),
@@ -42,7 +41,6 @@ class _DonateViewState extends State<DonateView> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: Container(
-                height: context.sizeH(0.10),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -67,7 +65,8 @@ class _DonateViewState extends State<DonateView> {
                     color: Colors.teal,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(Icons.check_circle_outline_outlined, color: Colors.white),
+                  child: Icon(Icons.check_circle_outline_outlined,
+                      color: Colors.white),
                 ),
                 title: Row(
                   children: [
@@ -90,7 +89,8 @@ class _DonateViewState extends State<DonateView> {
                 ),
                 subtitle: Text(
                   'Verified foundation',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.grey),
                 ),
               ),
             ),
@@ -118,25 +118,37 @@ class _DonateViewState extends State<DonateView> {
                         Row(
                           children: [
                             LinearPercentIndicator(
-                              backgroundColor: ColorConstants.instance.perfume.withOpacity(0.4),
+                              backgroundColor: ColorConstants.instance.perfume
+                                  .withOpacity(0.4),
                               width: context.sizeW(0.60),
                               lineHeight: 10,
                               percent: 0.4,
-                              progressColor: ColorConstants.instance.purpleHeart,
+                              progressColor:
+                                  ColorConstants.instance.purpleHeart,
                             ),
                             RichText(
                               text: TextSpan(children: [
                                 TextSpan(
                                   text: "12",
-                                  style: TextStyle(fontWeight: FontWeight.bold, color: ColorConstants.instance.purpleHeart, fontSize: 13),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          ColorConstants.instance.purpleHeart,
+                                      fontSize: 13),
                                 ),
                                 TextSpan(
                                   text: " / ",
-                                  style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 TextSpan(
                                   text: "1000 voted",
-                                  style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ]),
                             ),
@@ -170,7 +182,10 @@ class _DonateViewState extends State<DonateView> {
                               onPressed: () {},
                               child: Text(
                                 "See all",
-                                style: TextStyle(color: ColorConstants.instance.purpleHeart, fontSize: 17, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    color: ColorConstants.instance.purpleHeart,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold),
                               )),
                         ],
                       ),
@@ -241,12 +256,14 @@ class _DonateViewState extends State<DonateView> {
                                         height: 4,
                                         width: 60,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           color: Colors.grey,
                                         )),
                                   ),
                                   SizedBox(height: context.sizeH(0.02)),
-                                  Text("How much wanna donate?", style: appBarTextStyle),
+                                  Text("How much wanna donate?",
+                                      style: appBarTextStyle),
                                 ],
                               ),
                             );
@@ -254,7 +271,10 @@ class _DonateViewState extends State<DonateView> {
                         ),
                     child: Text(
                       "Donate Now",
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
                     )),
               ),
             )
