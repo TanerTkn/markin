@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:markin/constant/color_constant.dart';
 import 'package:markin/core/controllers/user_controller.dart';
 import 'package:markin/core/services/auth_service.dart';
 import 'package:markin/core/services/validator_service.dart';
@@ -18,7 +18,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  static final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   String valueChoose;
 
   TextEditingController emailController = TextEditingController();
@@ -45,8 +44,8 @@ class _SignUpState extends State<SignUp> {
           decoration: BoxDecoration(
               gradient: LinearGradient(
             colors: [
-              Color(0xFFC2A1F6),
-              Color(0xFF743ecc),
+              ColorConstants.instance.perfume,
+              ColorConstants.instance.purpleHeart,
             ],
             begin: Alignment.topLeft,
             end: Alignment.centerRight,
@@ -115,7 +114,7 @@ class _SignUpState extends State<SignUp> {
                   onSaved: (onSavedValue) {},
                 ),
                 SizedBox(
-                  height: 40,
+                  height: context.sizeH(0.20),
                 ),
                 TextHelper.inputFieldWidget(
                   context: context,
@@ -129,7 +128,7 @@ class _SignUpState extends State<SignUp> {
                   onSaved: (onSavedValue) {},
                 ),
                 SizedBox(
-                  height: 40,
+                  height: context.sizeH(0.20),
                 ),
                 TextHelper.passFieldWidget(
                   context: context,
@@ -152,7 +151,7 @@ class _SignUpState extends State<SignUp> {
                   onSaved: (onSavedValue) {},
                 ),
                 SizedBox(
-                  height: 20,
+                  height: context.sizeH(0.20),
                 ),
                 SizedBox(
                   height: context.sizeH(0.15),
@@ -177,7 +176,7 @@ class _SignUpState extends State<SignUp> {
                       }),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: context.sizeH(0.10),
                 ),
                 buildContainer()
               ],
@@ -195,7 +194,7 @@ class _SignUpState extends State<SignUp> {
       child: RaisedButton(
         shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(60.0)),
-        color: Color(0xff743ecc),
+        color: ColorConstants.instance.purpleHeart,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Text(
