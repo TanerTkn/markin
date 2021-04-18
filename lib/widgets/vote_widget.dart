@@ -99,7 +99,7 @@ class VoteWidget extends StatelessWidget {
                   width: context.sizeW(0.30),
                   alignment: Alignment.center,
                   child: Text(
-                    "Voted Now",
+                    "Vote Now",
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
