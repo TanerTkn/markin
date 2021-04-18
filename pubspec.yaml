@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   cloud_firestore: ^1.0.5
+  
   cupertino_icons: ^1.0.2
   firebase_auth: ^1.1.0
   firebase_storage: ^8.0.3
@@ -47,6 +48,7 @@ flutter:
   assets:
     - assets/svgs/
     - assets/images/
+    - assets/looties/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
