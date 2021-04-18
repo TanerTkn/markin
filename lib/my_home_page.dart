@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:markin/core/extension/context_extension.dart';
+import 'package:markin/utilities/textstyle.dart';
+import 'package:markin/view/events/events_view..dart';
+import 'package:markin/view/profile/profile_view.dart';
 import 'package:markin/widgets/bottom_item.dart';
 import 'package:markin/widgets/maindrawer.dart';
 import 'core/base/base_state.dart';
@@ -14,18 +17,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with BaseState {
-  TextStyle appBarTextStyle =
-      TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black);
   int currentIndex = 0;
   final pages = [
     HomeView(),
-    HomeView(),
-    HomeView(),
+    EventsView(),
+    ProfileView(),
   ];
 
   final pagesnames = [
     'Home',
-    'Vote',
     'Events',
     'Profile',
   ];
@@ -36,6 +36,7 @@ class _MyHomePageState extends State<MyHomePage> with BaseState {
         child: MainDrawer(),
       ),
       appBar: AppBar(
+        centerTitle: true,
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
@@ -44,12 +45,15 @@ class _MyHomePageState extends State<MyHomePage> with BaseState {
           style: appBarTextStyle,
         ),
         actions: [
-          IconButton(
-              icon: SvgPicture.asset(
-                'assets/svgs/bell.svg',
-                color: Colors.black,
-              ),
-              onPressed: () {}),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: IconButton(
+                icon: SvgPicture.asset(
+                  'assets/svgs/bell.svg',
+                  color: Colors.black,
+                ),
+                onPressed: () {}),
+          ),
         ],
       ),
       body: pages[currentIndex],
@@ -70,19 +74,19 @@ class _MyHomePageState extends State<MyHomePage> with BaseState {
             ),
             BottomItem(
               icon: 'assets/svgs/events.svg',
-              isSelected: currentIndex == 2,
+              isSelected: currentIndex == 1,
               onTap: () {
                 setState(() {
-                  currentIndex = 2;
+                  currentIndex = 1;
                 });
               },
             ),
             BottomItem(
               icon: 'assets/svgs/person.svg',
-              isSelected: currentIndex == 3,
+              isSelected: currentIndex == 2,
               onTap: () {
                 setState(() {
-                  currentIndex = 3;
+                  currentIndex = 2;
                 });
               },
             ),
