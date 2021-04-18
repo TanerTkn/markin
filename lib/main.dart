@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: firebaseAuth.currentUser == null ? SignIn() : MyHomePage(),
+      home: SignIn(),
     );
   }
 }

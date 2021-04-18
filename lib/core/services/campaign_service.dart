@@ -26,6 +26,15 @@ class CampaignService {
     return campaignList;
   }
 
+  Future<void> voteCampaign(String campaignID) async {
+    await FirebaseFirestore.instance
+        .collection(campaignPath)
+        .doc(campaignID)
+        .collection(subUserPath)
+        .doc(firebaseAuth.currentUser.uid)
+        .set({"voted": true});
+  }
+
   Future<List<Campaign>> getRecentCampaigns() async {
     var data = await _firestore.collection(campaignPath).get();
     List<Campaign> campaignList = [];

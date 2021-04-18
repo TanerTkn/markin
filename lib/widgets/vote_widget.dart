@@ -43,9 +43,14 @@ class VoteWidget extends StatelessWidget {
                             color: ColorConstants.instance.purpleHeart,
                             fontWeight: FontWeight.bold)),
                     SizedBox(height: context.sizeH(0.01)),
-                    Text(data.title,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18)),
+                    SizedBox(
+                      width: context.sizeW(0.5),
+                      child: Text(data.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18)),
+                    ),
                     SizedBox(height: context.sizeH(0.01)),
                     Row(
                       children: [

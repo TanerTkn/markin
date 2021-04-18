@@ -7,7 +7,7 @@ import 'package:markin/core/services/auth_service.dart';
 import 'package:markin/core/services/campaign_service.dart';
 import 'package:markin/models/campaign_model.dart';
 import 'package:markin/models/profile.dart';
-import 'package:markin/view/home/home_view.dart';
+import 'package:markin/widgets/vote_widget.dart';
 
 class ProfileView extends StatefulWidget {
   @override
@@ -15,96 +15,41 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  CampaignService campaignService = CampaignService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xfff5e5ff),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              child: Stack(
-                children: [
-                  buildStatic(context),
-                  buildPerson(context),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: context.sizeH(0.03),
-            ),
-            Container(
-              height: context.sizeH(0.35),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                        "https://i.milliyet.com.tr/GazeteHaberIciResim/2017/11/21/fft16_mf10284922.Jpeg"),
-                  )),
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Container(
-                    height: context.sizeH(0.12),
-                    width: context.sizeH(0.4),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(height: context.sizeH(0.01)),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    "assets/svgs/vote.svg",
-                                    height: 15,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        CupertinoButton(
-                          child: Container(
-                            height: context.sizeH(0.1),
-                            width: context.sizeW(0.15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: ColorConstants.instance.electricViolet,
-                            ),
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.white,
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomeView()));
-                          },
-                        )
-                      ],
-                    ),
+      body: FutureBuilder<List<Campaign>>(
+          future: campaignService
+              .getCampaignsByUserID(firebaseAuth.currentUser.uid),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return ListView(
+              children: [
+                Container(
+                  child: Stack(
+                    children: [
+                      buildStatic(context),
+                      buildPerson(context),
+                    ],
                   ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
+                ),
+                SizedBox(
+                  height: context.sizeH(0.03),
+                ),
+              ]..addAll(snapshot.data.map((data) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: VoteWidget(
+                      data: data,
+                    ),
+                  ))),
+            );
+          }),
     );
   }
 

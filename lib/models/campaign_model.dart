@@ -4,6 +4,7 @@ import 'package:markin/models/profile.dart';
 
 class Campaign {
   final String title;
+  final String id;
   final String content;
   final String image;
   final int markCount;
@@ -15,6 +16,7 @@ class Campaign {
   Campaign({
     this.ownerID,
     this.title,
+    this.id,
     this.content,
     this.image,
     this.markCount,
@@ -30,6 +32,7 @@ class Campaign {
         image: snapshot.data()['image'],
         ownerID: snapshot.data()['ownerID'],
         markCount: profileList.length,
+        id: snapshot.id,
         participantsList: profileList,
         title: snapshot.data()['title'],
         category: category,

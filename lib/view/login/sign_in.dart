@@ -4,7 +4,6 @@ import 'package:markin/constant/color_constant.dart';
 import 'package:markin/core/controllers/user_controller.dart';
 import 'package:markin/core/services/auth_service.dart';
 import 'package:markin/core/services/validator_service.dart';
-import 'package:markin/models/profile.dart';
 import 'package:markin/my_home_page.dart';
 import 'package:markin/view/login/signup.dart';
 import 'package:markin/widgets/reset_password.dart';
@@ -133,7 +132,7 @@ class _SignInState extends State<SignIn> {
                   onSaved: (onSavedValue) {},
                 ),
                 SizedBox(
-                  height: context.sizeH(0.125),
+                  height: context.sizeH(0.05),
                 ),
                 TextButton(
                     onPressed: () {
@@ -144,7 +143,7 @@ class _SignInState extends State<SignIn> {
                           ));
                     },
                     child: Text(
-                      "Hesabın Yok mu?",
+                      "Don't have an account?",
                       style: TextStyle(
                           color: ColorConstants.instance.electricViolet),
                     )),
@@ -157,12 +156,12 @@ class _SignInState extends State<SignIn> {
                       );
                     },
                     child: Text(
-                      "Şifreni mi unuttun?",
+                      "Did you forget your password?",
                       style: TextStyle(
                           color: ColorConstants.instance.electricViolet),
                     )),
                 SizedBox(
-                  height: context.sizeH(0.125),
+                  height: context.sizeH(0.05),
                 ),
                 buildContainer()
               ],

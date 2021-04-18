@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:markin/constant/color_constant.dart';
+import 'package:markin/core/services/auth_service.dart';
+import 'package:markin/core/services/campaign_service.dart';
 import 'package:markin/models/campaign_model.dart';
-import 'package:markin/my_home_page.dart';
 import 'package:markin/utilities/textstyle.dart';
 import 'package:markin/core/extension/context_extension.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:markin/widgets/vote_dialog.dart';
 
 class DetailView extends StatefulWidget {
   final Campaign campaign;
@@ -16,9 +18,16 @@ class DetailView extends StatefulWidget {
 }
 
 class _DetailViewState extends State<DetailView> {
+  GlobalKey<ScaffoldState> scKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
+    bool voted = widget.campaign.participantsList
+            .where((element) => element.userID == firebaseAuth.currentUser.uid)
+            .toList()
+            .length ==
+        1;
     return Scaffold(
+      key: scKey,
       appBar: buildAppBar(),
       body: SingleChildScrollView(
         child: Column(
@@ -144,7 +153,8 @@ class _DetailViewState extends State<DetailView> {
                             Expanded(
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: 1,
+                                itemCount:
+                                    widget.campaign.participantsList.length,
                                 itemBuilder: (context, index) {
                                   var participant =
                                       widget.campaign.participantsList[index];
@@ -170,34 +180,54 @@ class _DetailViewState extends State<DetailView> {
               ),
             ),
             SizedBox(height: context.sizeH(0.04)),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: context.sizeW(0.15)),
-              child: Container(
-                height: context.sizeH(0.10),
-                width: double.infinity,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: ColorConstants.instance.purpleHeart,
-                      onPrimary: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.0),
-                      ),
+            voted == false
+                ? Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: context.sizeW(0.15)),
+                    child: Container(
+                      height: context.sizeH(0.10),
+                      width: double.infinity,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: ColorConstants.instance.purpleHeart,
+                            onPrimary: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                          ),
+                          onPressed: () async {
+                            scKey.currentState.showBottomSheet((context) {
+                              return VoteDialog(
+                                submitFunction: () async {
+                                  CampaignService campaignService =
+                                      CampaignService();
+                                  campaignService
+                                      .voteCampaign(widget.campaign.id);
+                                },
+                              );
+                            },
+                                elevation: 20,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30)),
+                                ));
+                          },
+                          child: Text(
+                            "Vote Now",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          )),
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyHomePage()));
-                    },
-                    child: Text(
-                      "Voted Now",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    )),
-              ),
-            )
+                  )
+                : Text(
+                    "This campaign voted",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
           ],
         ),
       ),

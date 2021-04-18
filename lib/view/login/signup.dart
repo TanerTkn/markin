@@ -86,7 +86,7 @@ class _SignUpState extends State<SignUp> {
 
   Expanded buildExp2(BuildContext context) {
     return Expanded(
-      flex: 5,
+      flex: 6,
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -114,7 +114,7 @@ class _SignUpState extends State<SignUp> {
                   onSaved: (onSavedValue) {},
                 ),
                 SizedBox(
-                  height: context.sizeH(0.06),
+                  height: context.sizeH(0.03),
                 ),
                 TextHelper.inputFieldWidget(
                   context: context,
@@ -128,7 +128,7 @@ class _SignUpState extends State<SignUp> {
                   onSaved: (onSavedValue) {},
                 ),
                 SizedBox(
-                  height: context.sizeH(0.06),
+                  height: context.sizeH(0.04),
                 ),
                 TextHelper.passFieldWidget(
                   context: context,
@@ -151,10 +151,10 @@ class _SignUpState extends State<SignUp> {
                   onSaved: (onSavedValue) {},
                 ),
                 SizedBox(
-                  height: context.sizeH(0.06),
+                  height: context.sizeH(0.03),
                 ),
                 SizedBox(
-                  height: context.sizeH(0.12),
+                  height: context.sizeH(0.15),
                   width: context.sizeW(0.8),
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -205,10 +205,12 @@ class _SignUpState extends State<SignUp> {
         onPressed: () async {
           if (formKey.currentState.validate() && gender.isNotEmpty) {
             AuthService authService = AuthService();
-            Profile profile = await authService.signInAccount(
-              emailController.text,
-              passwordController.text,
-            );
+            // ignore: unused_local_variable
+            Profile profile = await authService.signUpAccount(
+                emailController.text,
+                passwordController.text,
+                "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=6&m=1223671392&s=612x612&w=0&h=NGxdexflb9EyQchqjQP0m6wYucJBYLfu46KCLNMHZYM=",
+                usernameController.text);
             userController.updateProfile(firebaseAuth.currentUser);
             Navigator.pushReplacement(
                 context,

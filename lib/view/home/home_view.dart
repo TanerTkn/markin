@@ -52,6 +52,11 @@ class _HomeViewState extends State<HomeView> with BaseState {
             child: FutureBuilder(
               future: service.getRecentCampaigns(),
               builder: (context, AsyncSnapshot<List<Campaign>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
                 return ListView(
                   scrollDirection: Axis.horizontal,
                   children: snapshot.data
@@ -90,6 +95,11 @@ class _HomeViewState extends State<HomeView> with BaseState {
             child: FutureBuilder(
               future: service.getPopularCampaigns(),
               builder: (context, AsyncSnapshot<List<Campaign>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
                 return ListView(
                   scrollDirection: Axis.horizontal,
                   children: snapshot.data
@@ -104,71 +114,5 @@ class _HomeViewState extends State<HomeView> with BaseState {
         ],
       ),
     );
-    return FutureBuilder<List<Campaign>>(
-        future: service.getRecentCampaigns(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData ||
-              snapshot.connectionState == ConnectionState.waiting)
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          List<Campaign> campaignList = snapshot.data;
-          print(campaignList.first.image);
-          return ListView(
-            shrinkWrap: true,
-            children: [
-              Categories(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Featured MarkIns",
-                      style: appBarTextStyle,
-                    ),
-                    TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "See all",
-                          style: TextStyle(
-                              color: ColorConstants.instance.purpleHeart,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold),
-                        )),
-                  ],
-                ),
-              ),
-              SizedBox(height: context.sizeH(0.05)),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Popular MarkIns",
-                      style: appBarTextStyle,
-                    ),
-                    TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "See all",
-                          style: TextStyle(
-                              color: ColorConstants.instance.purpleHeart,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold),
-                        )),
-                  ],
-                ),
-              ),
-            ]..addAll(campaignList.map<Widget>((data) {
-                print(data.content);
-                print(data.title);
-                return VoteWidget(
-                  data: data,
-                );
-              })),
-          );
-        });
   }
 }
