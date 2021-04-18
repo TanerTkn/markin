@@ -27,7 +27,7 @@ class VoteWidget extends StatelessWidget {
           children: [
             Container(
               height: context.sizeH(0.12),
-              width: double.infinity,
+              width: context.sizeW(0.85),
               decoration: BoxDecoration(
                 color: Colors.grey[100],
                 borderRadius: BorderRadius.circular(20),
@@ -38,9 +38,19 @@ class VoteWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Finished MarkIns June 15 2021", style: TextStyle(color: ColorConstants.instance.purpleHeart, fontWeight: FontWeight.bold)),
+                    Text("Finished MarkIns June 15 2021",
+                        style: TextStyle(
+                            color: ColorConstants.instance.purpleHeart,
+                            fontWeight: FontWeight.bold)),
                     SizedBox(height: context.sizeH(0.01)),
-                    Text(data.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                    SizedBox(
+                      width: context.sizeW(0.5),
+                      child: Text(data.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18)),
+                    ),
                     SizedBox(height: context.sizeH(0.01)),
                     Row(
                       children: [
@@ -55,7 +65,10 @@ class VoteWidget extends StatelessWidget {
                             text: TextSpan(children: [
                           TextSpan(
                             text: data.markCount.toString(),
-                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal, fontSize: 13),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.teal,
+                                fontSize: 13),
                           ),
                           TextSpan(
                             text: "  Voted",
@@ -76,7 +89,9 @@ class VoteWidget extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailView(),
+                        builder: (context) => DetailView(
+                          campaign: data,
+                        ),
                       ));
                 },
                 child: Container(
@@ -85,7 +100,8 @@ class VoteWidget extends StatelessWidget {
                   alignment: Alignment.center,
                   child: Text(
                     "Voted Now",
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                   decoration: BoxDecoration(
                       color: ColorConstants.instance.electricViolet,
