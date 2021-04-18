@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:markin/constant/color_constant.dart';
 import 'package:markin/core/extension/context_extension.dart';
+import 'package:markin/core/services/auth_service.dart';
+import 'package:markin/core/services/campaign_service.dart';
+import 'package:markin/models/campaign_model.dart';
+import 'package:markin/models/profile.dart';
 import 'package:markin/view/home/home_view.dart';
 
 class ProfileView extends StatefulWidget {
@@ -139,35 +143,48 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  Container buildPerson(BuildContext context) {
-    return Container(
-      constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height / 2.5,
-          maxWidth: MediaQuery.of(context).size.width),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(40),
-          bottomRight: Radius.circular(40),
-        ),
-      ),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            buildImage(context),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Text('Jack Snow',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700)),
-            )
-          ],
-        ),
-      ),
+  FutureBuilder buildPerson(BuildContext context) {
+    AuthService authService = AuthService();
+    return FutureBuilder(
+      future: authService.userToProfile(firebaseAuth.currentUser.uid),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        Profile profile = snapshot.data;
+        return Container(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height / 2.5,
+              maxWidth: MediaQuery.of(context).size.width),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(40),
+              bottomRight: Radius.circular(40),
+            ),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                buildImage(context, profile.profileImage),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Text(profile.name,
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.w700)),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
-  SizedBox buildImage(BuildContext context) {
+  SizedBox buildImage(BuildContext context, String imageURL) {
     return SizedBox(
       height: context.sizeH(0.2),
       width: context.sizeW(0.4),
@@ -175,7 +192,7 @@ class _ProfileViewState extends State<ProfileView> {
         fit: StackFit.expand,
         children: [
           CircleAvatar(
-            backgroundImage: AssetImage('assets/images/prof.jpeg'),
+            backgroundImage: NetworkImage(imageURL),
           ),
           Positioned(
             right: 0,
@@ -191,7 +208,7 @@ class _ProfileViewState extends State<ProfileView> {
                     side: BorderSide(color: Color(0xFF752DEB)),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () async {},
                 child: SvgPicture.asset(
                   'assets/svgs/cameraicon.svg',
                   color: Colors.black,
@@ -233,27 +250,40 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  Column buildText1() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Text('125',
-            style: TextStyle(
-                fontSize: 23,
-                color: Colors.white,
-                fontWeight: FontWeight.w500)),
-        Text('Campaign',
-            style: TextStyle(
-                fontSize: 20, color: Colors.white, fontWeight: FontWeight.w400))
-      ],
-    );
+  FutureBuilder buildText1() {
+    CampaignService campaignService = CampaignService();
+    return FutureBuilder<List<Campaign>>(
+        future:
+            campaignService.getCampaignsByUserID(firebaseAuth.currentUser.uid),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(snapshot.data.length.toString(),
+                  style: TextStyle(
+                      fontSize: 23,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500)),
+              Text('Campaign',
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400))
+            ],
+          );
+        });
   }
 
   Column buildText2() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Text('320',
+        Text('?',
             style: TextStyle(
                 fontSize: 23,
                 color: Colors.white,
