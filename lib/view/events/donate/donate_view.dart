@@ -5,8 +5,13 @@ import 'package:markin/constant/color_constant.dart';
 import 'package:markin/utilities/textstyle.dart';
 import 'package:markin/core/extension/context_extension.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:markin/models/event.dart';
+import 'package:markin/widgets/donate_sheet.dart';
 
 class DonateView extends StatefulWidget {
+  final Event event;
+
+  const DonateView({Key key, this.event}) : super(key: key);
   @override
   _DonateViewState createState() => _DonateViewState();
 }
@@ -14,6 +19,7 @@ class DonateView extends StatefulWidget {
 class _DonateViewState extends State<DonateView> {
   @override
   Widget build(BuildContext context) {
+    var event = widget.event;
     return Scaffold(
       appBar: buildAppBar(),
       body: SingleChildScrollView(
@@ -28,15 +34,14 @@ class _DonateViewState extends State<DonateView> {
                     borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(
-                          "https://i.milliyet.com.tr/GazeteHaberIciResim/2017/11/21/fft16_mf10284922.Jpeg"),
+                      image: NetworkImage(event.image),
                     )),
               ),
             ),
             SizedBox(height: context.sizeH(0.02)),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 25),
-              child: Text("Soyu tükenen hayvanlar", style: appBarTextStyle),
+              child: Text(event.title, style: appBarTextStyle),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -49,7 +54,7 @@ class _DonateViewState extends State<DonateView> {
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+                    event.content,
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
@@ -71,7 +76,7 @@ class _DonateViewState extends State<DonateView> {
                 title: Row(
                   children: [
                     Text(
-                      'Unicef',
+                      event.foundation.foundationName,
                       style: appBarTextStyle,
                     ),
                     SizedBox(width: context.sizeW(0.01)),
@@ -112,7 +117,8 @@ class _DonateViewState extends State<DonateView> {
                       children: [
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 5),
-                          child: Text("Targeted Voted", style: appBarTextStyle),
+                          child:
+                              Text("Targeted Donation", style: appBarTextStyle),
                         ),
                         SizedBox(height: context.sizeH(0.01)),
                         Row(
@@ -122,14 +128,14 @@ class _DonateViewState extends State<DonateView> {
                                   .withOpacity(0.4),
                               width: context.sizeW(0.60),
                               lineHeight: 10,
-                              percent: 0.4,
+                              percent: event.donateCount / 1000,
                               progressColor:
                                   ColorConstants.instance.purpleHeart,
                             ),
                             RichText(
                               text: TextSpan(children: [
                                 TextSpan(
-                                  text: "12",
+                                  text: event.donateCount.toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color:
@@ -144,7 +150,7 @@ class _DonateViewState extends State<DonateView> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 TextSpan(
-                                  text: "1000 voted",
+                                  text: "1000 donation",
                                   style: TextStyle(
                                       color: Colors.grey,
                                       fontSize: 13,
@@ -177,7 +183,7 @@ class _DonateViewState extends State<DonateView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Participants", style: appBarTextStyle),
+                          Text("Donaters", style: appBarTextStyle),
                           TextButton(
                               onPressed: () {},
                               child: Text(
@@ -198,15 +204,15 @@ class _DonateViewState extends State<DonateView> {
                             Expanded(
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: 10,
+                                itemCount: event.donateOwners.length,
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding: EdgeInsets.all(5.0),
                                     child: Container(
                                       width: context.sizeW(0.10),
                                       child: CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg"),
+                                        backgroundImage: NetworkImage(event
+                                            .donateOwners[index].profileImage),
                                       ),
                                     ),
                                   );
@@ -236,36 +242,12 @@ class _DonateViewState extends State<DonateView> {
                       ),
                     ),
                     onPressed: () => showModalBottomSheet(
+                          isScrollControlled: true,
                           backgroundColor: Colors.transparent,
                           context: context,
                           builder: (context) {
-                            return Container(
-                              height: context.sizeH(0.6),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(30),
-                                  topLeft: Radius.circular(30),
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Container(
-                                        height: 4,
-                                        width: 60,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Colors.grey,
-                                        )),
-                                  ),
-                                  SizedBox(height: context.sizeH(0.02)),
-                                  Text("How much wanna donate?",
-                                      style: appBarTextStyle),
-                                ],
-                              ),
+                            return DonateSheet(
+                              appBarTextStyle: appBarTextStyle,
                             );
                           },
                         ),

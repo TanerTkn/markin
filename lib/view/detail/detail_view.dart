@@ -36,7 +36,7 @@ class _DetailViewState extends State<DetailView> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 18),
               child: Container(
-                height: context.sizeH(0.25),
+                height: context.sizeH(0.20),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
@@ -49,7 +49,26 @@ class _DetailViewState extends State<DetailView> {
               padding: EdgeInsets.symmetric(horizontal: 25),
               child: Text("Soyu tükenen hayvanlar", style: appBarTextStyle),
             ),
-            SizedBox(height: context.sizeH(0.04)),
+            SizedBox(height: context.sizeH(0.02)),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.grey[100],
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+                    style: TextStyle(fontSize: 16),
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: Container(

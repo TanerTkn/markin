@@ -26,7 +26,7 @@ class VoteWidget extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           children: [
             Container(
-              height: context.sizeH(0.14),
+              height: context.sizeH(0.12),
               width: context.sizeW(0.85),
               decoration: BoxDecoration(
                 color: Colors.grey[100],
@@ -99,7 +99,7 @@ class VoteWidget extends StatelessWidget {
                   width: context.sizeW(0.30),
                   alignment: Alignment.center,
                   child: Text(
-                    "Vote Now",
+                    "Voted Now",
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),

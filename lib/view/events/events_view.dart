@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:markin/constant/color_constant.dart';
-import 'package:markin/core/services/campaign_service.dart';
-import 'package:markin/models/campaign_model.dart';
 import 'package:markin/utilities/textstyle.dart';
-import 'package:markin/core/extension/context_extension.dart';
 import 'package:markin/widgets/verified_widget.dart';
+import 'package:markin/core/services/event_service.dart';
+import 'package:markin/models/event.dart';
 
 class EventsView extends StatefulWidget {
   @override
@@ -14,49 +12,52 @@ class EventsView extends StatefulWidget {
 class _EventsViewState extends State<EventsView> {
   @override
   Widget build(BuildContext context) {
-    CampaignService service = CampaignService();
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Row(
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
+    EventService service = EventService();
+    return FutureBuilder<List<Event>>(
+        future: service.getRecentEvents(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Row(
                   children: [
-                    Text(
-                      "Verified Foundation",
-                      style: appBarTextStyle,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Events by Verified Foundation",
+                          style: appBarTextStyle,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        CircleAvatar(
+                          radius: 10,
+                          backgroundColor: Colors.teal,
+                          child: Center(
+                              child: Icon(
+                            Icons.check,
+                            color: Colors.white,
+                            size: 12,
+                          )),
+                        )
+                      ],
                     ),
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundColor: Colors.teal,
-                      child: Center(child: Icon(Icons.check, color: Colors.white,size: 12,)),
-                    )
                   ],
                 ),
-              ],
-            ),
-          ),
-          Container(
-            height: context.sizeH(0.8),
-            width: double.infinity,
-            child: FutureBuilder(
-              future: service.getRecentCampaigns(),
-              builder: (context, AsyncSnapshot<List<Campaign>> snapshot) {
-                return ListView(
-                  children: snapshot.data
-                      .map<Widget>((data) => VerifiedWidget(
-                            data: data,
-                          ))
-                      .toList(),
+              ),
+            ]..addAll(snapshot.data.map<Widget>((data) {
+                return VerifiedWidget(
+                  data: data,
                 );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+              })),
+          );
+        });
   }
 }

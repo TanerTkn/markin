@@ -87,10 +87,11 @@ class CampaignService {
   Future<List<Campaign>> getCampaignsByCategory(
       CampaignCategory campaignCategory) async {
     String campaignString = campaignToString(campaignCategory);
+    print("started");
+    print(campaignString);
     var data = await _firestore
         .collection(campaignPath)
         .where("category", isEqualTo: campaignString)
-        .orderBy("dateTime")
         .get();
     List<Campaign> campaignList = [];
     for (var i = 0; i < data.docs.length; i++) {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:markin/core/services/auth_service.dart';
 import 'package:markin/my_home_page.dart';
+
 import 'package:markin/view/login/sign_in.dart';
 
 void main() async {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SignIn(),
+      home: firebaseAuth.currentUser == null ? SignIn() : MyHomePage(),
     );
   }
 }
