@@ -8,6 +8,7 @@ With the MarkIn application, you can draw attention to an issue or donate to ass
 - 🔒 Donation for Social Responsibility projects  🔒
 - ✨Magic ✨
 
+![Alt Text](https://secure.meetupstatic.com/photos/event/7/1/highres_489540113.jpeg)
 ## Features
 
 - Firebase Backend
