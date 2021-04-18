@@ -79,7 +79,10 @@ class _HomeViewState extends State<HomeView> with BaseState {
               onPressed: () {},
               child: Text(
                 "See all",
-                style: TextStyle(color: ColorConstants.instance.purpleHeart, fontSize: 17, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: ColorConstants.instance.purpleHeart,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold),
               )),
         ],
       ),
@@ -125,7 +128,10 @@ class _HomeViewState extends State<HomeView> with BaseState {
               onPressed: () {},
               child: Text(
                 "See all",
-                style: TextStyle(color: ColorConstants.instance.purpleHeart, fontSize: 17, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: ColorConstants.instance.purpleHeart,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold),
               )),
         ],
       ),

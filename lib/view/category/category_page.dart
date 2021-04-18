@@ -36,6 +36,9 @@ class CategoryPage extends StatelessWidget {
       body: FutureBuilder<List<Campaign>>(
           future: service.getCampaignsByCategory(categoryID),
           builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
             return ListView.builder(
               itemCount: snapshot.data.length,
               itemBuilder: (BuildContext context, int index) {
