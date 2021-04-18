@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:markin/constant/color_constant.dart';
+import 'package:markin/models/campaign_model.dart';
 import 'package:markin/my_home_page.dart';
 import 'package:markin/utilities/textstyle.dart';
 import 'package:markin/core/extension/context_extension.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class DetailView extends StatefulWidget {
+  final Campaign campaign;
+
+  const DetailView({Key key, this.campaign}) : super(key: key);
   @override
   _DetailViewState createState() => _DetailViewState();
 }
@@ -28,7 +32,7 @@ class _DetailViewState extends State<DetailView> {
                     borderRadius: BorderRadius.circular(20),
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage("https://i.milliyet.com.tr/GazeteHaberIciResim/2017/11/21/fft16_mf10284922.Jpeg"),
+                      image: NetworkImage(widget.campaign.image),
                     )),
               ),
             ),
@@ -60,25 +64,37 @@ class _DetailViewState extends State<DetailView> {
                         Row(
                           children: [
                             LinearPercentIndicator(
-                              backgroundColor: ColorConstants.instance.perfume.withOpacity(0.4),
+                              backgroundColor: ColorConstants.instance.perfume
+                                  .withOpacity(0.4),
                               width: context.sizeW(0.60),
                               lineHeight: 10,
-                              percent: 0.4,
-                              progressColor: ColorConstants.instance.purpleHeart,
+                              percent: widget.campaign.markCount / 1000,
+                              progressColor:
+                                  ColorConstants.instance.purpleHeart,
                             ),
                             RichText(
                               text: TextSpan(children: [
                                 TextSpan(
-                                  text: "12",
-                                  style: TextStyle(fontWeight: FontWeight.bold, color: ColorConstants.instance.purpleHeart, fontSize: 13),
+                                  text: widget.campaign.markCount.toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          ColorConstants.instance.purpleHeart,
+                                      fontSize: 13),
                                 ),
                                 TextSpan(
                                   text: " / ",
-                                  style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 TextSpan(
                                   text: "1000 voted",
-                                  style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ]),
                             ),
@@ -112,7 +128,10 @@ class _DetailViewState extends State<DetailView> {
                               onPressed: () {},
                               child: Text(
                                 "See all",
-                                style: TextStyle(color: ColorConstants.instance.purpleHeart, fontSize: 17, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    color: ColorConstants.instance.purpleHeart,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold),
                               )),
                         ],
                       ),
@@ -125,15 +144,17 @@ class _DetailViewState extends State<DetailView> {
                             Expanded(
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: 10,
+                                itemCount: 1,
                                 itemBuilder: (context, index) {
+                                  var participant =
+                                      widget.campaign.participantsList[index];
                                   return Padding(
                                     padding: EdgeInsets.all(5.0),
                                     child: Container(
                                       width: context.sizeW(0.10),
                                       child: CircleAvatar(
                                         backgroundImage: NetworkImage(
-                                            "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg"),
+                                            participant.profileImage),
                                       ),
                                     ),
                                   );
@@ -163,11 +184,17 @@ class _DetailViewState extends State<DetailView> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MyHomePage()));
                     },
                     child: Text(
                       "Voted Now",
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
                     )),
               ),
             )

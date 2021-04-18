@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:markin/constant/color_constant.dart';
 import 'package:markin/core/extension/context_extension.dart';
 import 'package:markin/view/home/home_view.dart';
-import 'package:markin/widgets/vote_widget.dart';
 
 class ProfileView extends StatefulWidget {
   @override

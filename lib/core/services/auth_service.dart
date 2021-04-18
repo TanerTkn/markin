@@ -28,11 +28,9 @@ class AuthService {
     userController.clearProfile();
   }
 
-  Future<Profile> userToProfile() async {
-    var snp = await FirebaseFirestore.instance
-        .collection(userPath)
-        .doc(firebaseAuth.currentUser.uid)
-        .get();
+  Future<Profile> userToProfile(String userID) async {
+    var snp =
+        await FirebaseFirestore.instance.collection(userPath).doc(userID).get();
 
     var profile = Profile.fromSnapshot(snp);
     return profile;

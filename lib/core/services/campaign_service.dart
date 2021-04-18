@@ -3,6 +3,7 @@ import 'package:markin/core/services/auth_service.dart';
 import 'package:markin/core/services/database_path.dart';
 import 'package:markin/models/campaign_category.dart';
 import 'package:markin/models/campaign_model.dart';
+import 'package:markin/models/profile.dart';
 
 class CampaignService {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -16,7 +17,7 @@ class CampaignService {
 
     for (var i = 0; i < data.docs.length; i++) {
       var element = data.docs[i];
-      int count = await getJoinedUserCount(element.id);
+      List<Profile> count = await getJoinedUserCount(element.id);
       var category = stringToCampaignCategories(element.data()['category']);
       Campaign campaign = Campaign.fromSnapshot(element, count, category);
       campaignList.add(campaign);
@@ -30,7 +31,7 @@ class CampaignService {
     List<Campaign> campaignList = [];
     for (var i = 0; i < data.docs.length; i++) {
       var element = data.docs[i];
-      int count = await getJoinedUserCount(element.id);
+      List<Profile> count = await getJoinedUserCount(element.id);
       var category = stringToCampaignCategories(element.data()['category']);
       Campaign campaign = Campaign.fromSnapshot(element, count, category);
       campaignList.add(campaign);
@@ -43,8 +44,10 @@ class CampaignService {
     List<Campaign> campaignList = [];
     for (var i = 0; i < data.docs.length; i++) {
       var element = data.docs[i];
-      int count = await getJoinedUserCount(element.id);
+      List<Profile> count = await getJoinedUserCount(element.id);
+      print(count.length);
       var category = stringToCampaignCategories(element.data()['category']);
+
       Campaign campaign = Campaign.fromSnapshot(element, count, category);
       campaignList.add(campaign);
     }
@@ -54,14 +57,22 @@ class CampaignService {
     return campaignList;
   }
 
-  Future<int> getJoinedUserCount(String campaignID) async {
+  Future<List<Profile>> getJoinedUserCount(String campaignID) async {
     QuerySnapshot snapshot = await _firestore
         .collection(campaignPath)
         .doc(campaignID)
-        .collection("profiles")
+        .collection(subUserPath)
         .get();
+    List<Profile> profileList = [];
+    for (var i = 0; i < snapshot.docs.length; i++) {
+      var data = snapshot.docs[i];
+      AuthService authService = AuthService();
 
-    return snapshot.docs.length;
+      Profile profile = await authService.userToProfile(data.id);
+      profileList.add(profile);
+    }
+
+    return profileList;
   }
 
   Future<List<Campaign>> getCampaignsByCategory(
@@ -75,7 +86,7 @@ class CampaignService {
     List<Campaign> campaignList = [];
     for (var i = 0; i < data.docs.length; i++) {
       var element = data.docs[i];
-      int count = await getJoinedUserCount(element.id);
+      List<Profile> count = await getJoinedUserCount(element.id);
       Campaign campaign =
           Campaign.fromSnapshot(element, count, campaignCategory);
       campaignList.add(campaign);

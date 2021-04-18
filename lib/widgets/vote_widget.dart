@@ -84,7 +84,9 @@ class VoteWidget extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailView(),
+                        builder: (context) => DetailView(
+                          campaign: data,
+                        ),
                       ));
                 },
                 child: Container(

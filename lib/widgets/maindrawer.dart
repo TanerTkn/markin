@@ -22,7 +22,7 @@ class MainDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             FutureBuilder<Profile>(
-                future: authService.userToProfile(),
+                future: authService.userToProfile(firebaseAuth.currentUser.uid),
                 builder: (context, snapshot) {
                   Profile profile = snapshot.data;
                   if (snapshot.connectionState == ConnectionState.waiting) {
