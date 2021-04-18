@@ -38,6 +38,22 @@ class CampaignService {
     return campaignList;
   }
 
+  Future<List<Campaign>> getPopularCampaigns() async {
+    var data = await _firestore.collection(campaignPath).get();
+    List<Campaign> campaignList = [];
+    for (var i = 0; i < data.docs.length; i++) {
+      var element = data.docs[i];
+      int count = await getJoinedUserCount(element.id);
+      var category = stringToCampaignCategories(element.data()['category']);
+      Campaign campaign = Campaign.fromSnapshot(element, count, category);
+      campaignList.add(campaign);
+    }
+    campaignList.sort((a, b) {
+      return a.markCount.compareTo(b.markCount);
+    });
+    return campaignList;
+  }
+
   Future<int> getJoinedUserCount(String campaignID) async {
     QuerySnapshot snapshot = await _firestore
         .collection(campaignPath)

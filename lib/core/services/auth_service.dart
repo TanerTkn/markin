@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:markin/core/controllers/user_controller.dart';
 import 'package:markin/core/services/database_path.dart';
 import 'package:markin/models/profile.dart';
 
@@ -16,6 +17,15 @@ class AuthService {
 
     var profile = Profile.fromSnapshot(res);
     return profile;
+  }
+
+  Future<void> resetPassword(String email) async {
+    return await firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<void> logout() async {
+    firebaseAuth.signOut();
+    userController.clearProfile();
   }
 
   Future<Profile> userToProfile() async {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:markin/core/extension/context_extension.dart';
 import 'package:markin/utilities/textstyle.dart';
-import 'package:markin/view/events/events_view..dart';
+import 'package:markin/view/events/events_view.dart';
 import 'package:markin/view/profile/profile_view.dart';
 import 'package:markin/widgets/bottom_item.dart';
 import 'package:markin/widgets/maindrawer.dart';

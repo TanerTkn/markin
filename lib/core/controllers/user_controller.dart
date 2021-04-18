@@ -1,10 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:markin/models/profile.dart';
 
 class UserController extends GetxController {
-  Profile profile;
+  User profile;
 
-  updateProfile(Profile newprofile) {
+  updateProfile(User newprofile) {
     profile = newprofile;
   }
 

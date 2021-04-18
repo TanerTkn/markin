@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:markin/constant/color_constant.dart';
 import 'package:markin/core/controllers/user_controller.dart';
 import 'package:markin/core/services/auth_service.dart';
 import 'package:markin/core/services/validator_service.dart';
 import 'package:markin/models/profile.dart';
 import 'package:markin/my_home_page.dart';
+import 'package:markin/view/login/signup.dart';
+import 'package:markin/widgets/reset_password.dart';
 import 'package:markin/widgets/texthelper.dart';
 import 'package:markin/core/extension/context_extension.dart';
 
@@ -64,7 +67,7 @@ class _SignInState extends State<SignIn> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'SIGN UP',
+              'SIGN IN',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 46.0,
@@ -107,7 +110,7 @@ class _SignInState extends State<SignIn> {
                   onSaved: (onSavedValue) {},
                 ),
                 SizedBox(
-                  height: context.sizeH(0.20),
+                  height: context.sizeH(0.06),
                 ),
                 TextHelper.passFieldWidget(
                   context: context,
@@ -130,10 +133,36 @@ class _SignInState extends State<SignIn> {
                   onSaved: (onSavedValue) {},
                 ),
                 SizedBox(
-                  height: context.sizeH(0.20),
+                  height: context.sizeH(0.125),
                 ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUp(),
+                          ));
+                    },
+                    child: Text(
+                      "Hesabın Yok mu?",
+                      style: TextStyle(
+                          color: ColorConstants.instance.electricViolet),
+                    )),
+                TextButton(
+                    onPressed: () async {
+                      showDialog(
+                        context: context,
+                        builder: (context) =>
+                            resetPasswordAlertDialog(context, emailController),
+                      );
+                    },
+                    child: Text(
+                      "Şifreni mi unuttun?",
+                      style: TextStyle(
+                          color: ColorConstants.instance.electricViolet),
+                    )),
                 SizedBox(
-                  height: context.sizeH(0.10),
+                  height: context.sizeH(0.125),
                 ),
                 buildContainer()
               ],
@@ -155,19 +184,18 @@ class _SignInState extends State<SignIn> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Text(
-            'Sign Up',
+            'Sign In',
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
         ),
         onPressed: () async {
           if (formKey.currentState.validate()) {
             AuthService authService = AuthService();
-            Profile profile = await authService.signUpAccount(
-                emailController.text,
-                passwordController.text,
-                "https://t3.ftcdn.net/jpg/04/26/07/16/360_F_426071644_FQ6PbbZmOifAreC4Vtw0huGVTnn3GXTM.jpg",
-                usernameController.text);
-            userController.updateProfile(profile);
+            await authService.signInAccount(
+              emailController.text,
+              passwordController.text,
+            );
+            userController.updateProfile(firebaseAuth.currentUser);
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

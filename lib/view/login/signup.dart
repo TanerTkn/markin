@@ -114,7 +114,7 @@ class _SignUpState extends State<SignUp> {
                   onSaved: (onSavedValue) {},
                 ),
                 SizedBox(
-                  height: context.sizeH(0.20),
+                  height: context.sizeH(0.06),
                 ),
                 TextHelper.inputFieldWidget(
                   context: context,
@@ -128,7 +128,7 @@ class _SignUpState extends State<SignUp> {
                   onSaved: (onSavedValue) {},
                 ),
                 SizedBox(
-                  height: context.sizeH(0.20),
+                  height: context.sizeH(0.06),
                 ),
                 TextHelper.passFieldWidget(
                   context: context,
@@ -151,10 +151,10 @@ class _SignUpState extends State<SignUp> {
                   onSaved: (onSavedValue) {},
                 ),
                 SizedBox(
-                  height: context.sizeH(0.20),
+                  height: context.sizeH(0.06),
                 ),
                 SizedBox(
-                  height: context.sizeH(0.15),
+                  height: context.sizeH(0.12),
                   width: context.sizeW(0.8),
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -176,7 +176,7 @@ class _SignUpState extends State<SignUp> {
                       }),
                 ),
                 SizedBox(
-                  height: context.sizeH(0.10),
+                  height: context.sizeH(0.06),
                 ),
                 buildContainer()
               ],
@@ -205,12 +205,11 @@ class _SignUpState extends State<SignUp> {
         onPressed: () async {
           if (formKey.currentState.validate() && gender.isNotEmpty) {
             AuthService authService = AuthService();
-            Profile profile = await authService.signUpAccount(
-                emailController.text,
-                passwordController.text,
-                "https://t3.ftcdn.net/jpg/04/26/07/16/360_F_426071644_FQ6PbbZmOifAreC4Vtw0huGVTnn3GXTM.jpg",
-                usernameController.text);
-            userController.updateProfile(profile);
+            Profile profile = await authService.signInAccount(
+              emailController.text,
+              passwordController.text,
+            );
+            userController.updateProfile(firebaseAuth.currentUser);
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
