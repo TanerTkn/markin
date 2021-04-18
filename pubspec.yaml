@@ -30,6 +30,7 @@ dependencies:
   flutter_svg: ^0.21.0+1
   get: ^4.1.4
   lottie: ^1.0.1
+  percent_indicator: ^3.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
